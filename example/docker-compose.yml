@@ -1,0 +1,10 @@
+services:
+  project:
+    build: .
+    environment:
+      - "DEV_PKGS=django-mitre"
+    volumes:
+      - ./:/app/src/
+      - ../:/app/dev/django-mitre
+    ports:
+      - "8000:8000"

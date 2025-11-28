@@ -1,0 +1,27 @@
+{% load mitreattack_tags %}
+
+<td>
+  <ul class="major_techniques">
+    {% for major_tech in techniques %}
+      <li class="{% for p in major_tech.platforms %}platform-{{ p }} {% endfor %}">
+        {% if major_tech.active_subtechniques %}
+          {% block subtechnique_expansion %}
+            <button title="Display sub-techniques for this major technique">
+              +
+            </button>
+          {% endblock subtechnique_expansion %}
+        {% endif %}
+        <a href="{% model_url major_tech 'detail' %}">{{ major_tech.name }}</a>
+
+        {% if major_tech.active_subtechniques %}
+          <ul class="sub-techniques" style="display: none;">
+            {% for sub_tech in major_tech.active_subtechniques %}
+              <li class="{% for p in major_tech.platforms %}platform-{{ p }} {% endfor %}">
+                <a href="{% model_url sub_tech 'detail' %}">{{ sub_tech.name }}</a></li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+</td>

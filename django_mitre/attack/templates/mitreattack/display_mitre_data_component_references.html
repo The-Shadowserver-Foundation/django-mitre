@@ -1,0 +1,16 @@
+{% load markdown from mitrecore.markdown %}
+{% load mitreattack_tags %}
+
+<h3 class="underline">{{ title|title }}</h3>
+
+{% for object in data_components %}
+
+  <h4 id="{{ object.name|slugify }}">{{ data_source.name|title }}: {{ object.name|title }}</h4>
+  <div>{{ object.description | first_sentence | markdown | safe }}</div>
+
+  <h5>Detects:</h5>
+  {% display_mitre_source_references_by_type 'detects' %}
+
+{% empty %}
+  <div class="empty-message">No data components for this source.</div>
+{% endfor %}

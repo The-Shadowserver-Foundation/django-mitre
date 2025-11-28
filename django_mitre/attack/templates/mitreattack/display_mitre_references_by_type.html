@@ -1,0 +1,32 @@
+{% load markdown from mitrecore.markdown %}
+{% load mitreattack_tags %}
+
+{% if references %}
+  {% block title %}
+    {% if title %}
+      <h3 class="underline">{{ title|capfirst }}</h3>
+    {% endif %}
+  {% endblock %}
+
+  {% block references_table %}
+    <table class="table">
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+      {% for object in references %}
+        <tr>
+          <td class="truncate">
+            <a href="{% model_url object 'detail' %}">
+              {{ object.name }}
+            </a>
+          </td>
+          <td class="truncate">
+            {{ object.description | first_sentence | markdown | safe }}
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+  {% endblock %}
+
+{% endif %}

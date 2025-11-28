@@ -1,0 +1,9 @@
+{% extends 'mitrecore/detail.html' %}
+{% load display_mitre_source_references_by_type from mitreattack_tags %}
+
+{% block content_model_references %}
+  {# If it's been revoked, place the refence it's revoking information at the top of the listing. #}
+  {% display_mitre_source_references_by_type 'revoked-by' title='Obsoleted By' %}
+  <h3 class="underline">Detects</h3>
+  {% display_mitre_source_references_by_type 'detects' %}
+{% endblock %}

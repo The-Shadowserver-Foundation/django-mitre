@@ -1,0 +1,6 @@
+{% extends 'mitrecore/detail.html' %}
+{% load mitreattack_tags %}
+
+{% block content_model_references %}
+  {% display_mitre_tactic_techniques %}
+{% endblock %}

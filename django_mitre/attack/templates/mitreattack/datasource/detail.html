@@ -1,0 +1,11 @@
+{% extends 'mitrecore/detail.html' %}
+{% load display_mitre_source_references_by_type display_mitre_data_component_references from mitreattack_tags %}
+
+
+{% block content_model_references %}
+  {# If it's been revoked, place the refence it's revoking information at the top of the listing. #}
+  {% display_mitre_source_references_by_type 'revoked-by' title='Obsoleted By' %}
+  {% block content_data_component_references %}
+    {% display_mitre_data_component_references %}
+  {% endblock %}
+{% endblock %}

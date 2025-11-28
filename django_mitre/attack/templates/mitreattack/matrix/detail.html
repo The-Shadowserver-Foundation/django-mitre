@@ -1,0 +1,35 @@
+{% extends 'mitrecore/detail.html' %}
+{% load mitreattack_tags %}
+
+{% block content_model_references %}
+  <h3 class="underline">Tactics</h3>
+
+  <div class="form-row">
+    <div class="form-col label"><label>Platform filter: </label></div>
+    <div class="form-col field field-full-width">
+      <select id="mitreattack-matrix-platform-selector">
+        <option value="All">All</option>
+        {% for platform in object.platforms %}
+          <option value="{{ platform }}">{{ platform }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+
+  <table id="mitreattack-matrix">
+    <thead>
+      <tr>
+        {% for tactic in view.get_ordered_tactics %}
+          <th>{{ tactic.name }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        {% for tactic in view.get_ordered_tactics %}
+          {% list_techniques_for_tactic tactic %}
+        {% endfor %}
+      </tr>
+    </tbody>
+  </table>
+{% endblock %}

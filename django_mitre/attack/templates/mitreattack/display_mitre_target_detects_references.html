@@ -1,0 +1,33 @@
+{% extends 'mitreattack/display_mitre_references_by_type.html' %}
+{% load markdown from mitrecore.markdown %}
+{% load mitreattack_tags %}
+
+
+{% block references_table %}
+  <table class="table">
+    <tr>
+      <th>Data Source</th>
+      <th>Name</th>
+      <th>Description</th>
+    </tr>
+    {% for object in references %}
+      {% with data_source=object.data_source_ref %}
+        <tr>
+          <td class="truncate">
+            <a href="{% model_url data_source 'detail' %}">
+              {{ object.data_source_ref.name }}
+            </a>
+          </td>
+          <td>
+            <a href="{% model_url data_source 'detail' %}#{{ object.name|slugify }}">
+              {{ object.name }}
+            </a>
+          </td>
+          <td class="truncate">
+            {{ object.description | first_sentence | markdown | safe }}
+          </td>
+        </tr>
+      {% endwith %}
+    {% endfor %}
+  </table>
+{% endblock %}

@@ -1,0 +1,6 @@
+{% extends 'mitrecore/index.html' %}
+
+
+{% block actions %}
+    <li><a href="{% url 'mitreattack:matrix_detail_by_collection' slug=object.slug %}">View</a></li>
+{% endblock %}

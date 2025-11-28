@@ -1,0 +1,12 @@
+django>=4.2,<5
+django-extensions
+django-getenv>=1.3
+
+# FIXME: We are needing to duplicate the requirements extra packages here.
+#        It'd be great if that wasn't necessary.
+
+# Testing packages
+model_bakery
+
+#: Required to provide compatibility with Django<5.1
+django-querystring-tag

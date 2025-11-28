@@ -1,0 +1,24 @@
+{% extends 'mitrecore/detail.html' %}
+{% load mitreattack_tags %}
+
+{% block content_details %}
+  <div class="mitreattack-details-panel">
+    <div class="detail">
+      <span class="label">Aliases: </span><span class="value">{{ object.aliases|join:", " }}</span>
+    </div>
+    <div class="detail">
+      <span class="label">First Seen: </span><a class="value">{{ object.first_seen|date:'M d, Y' }} {{ object.first_seen_citation }}</span>
+    </div>
+    <div class="detail">
+      <span class="label">Last Seen: </span><span class="value">{{ object.last_seen|date:'M d, Y' }}  {{ object.last_seen_citation }}</span>
+    </div>
+  </div>
+{% endblock %}
+
+
+{% block content_model_references %}
+  {# If it's been revoked, place the refence it's revoking information at the top of the listing. #}
+  {% display_mitre_source_references_by_type 'revoked-by' title='Obsoleted By' %}
+  {% display_mitre_source_references_by_type 'attributed-to' title='Attributed To' %}
+  {% display_mitre_source_references_by_type 'uses' title='Uses' %}
+{% endblock %}

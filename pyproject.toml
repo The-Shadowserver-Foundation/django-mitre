@@ -1,0 +1,82 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+
+[project]
+name = "django-mitre"
+version = "1.0.0"
+authors = [
+    { name = "The Shadowserver Foundation" },
+    { name = "Michael Mulich", email = "michael@mulich.com" },
+]
+license = "GPL-3.0"
+description = "MITRE ATT&CK and MBC ingesters, models, and views"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Framework :: Django",
+    "Framework :: Django :: 4",
+    "Framework :: Django :: 5",
+]
+dependencies = [
+    "django >= 4.2",
+    "django-filtering >= 0.0.9",
+    "django-filtering-ui >= 0.0.8",
+    "markdown",
+    "PyGithub",
+]
+
+
+[project.optional-dependencies]
+test = ["model_bakery"]
+tests = ["model_bakery"]
+django42 = ["django-querystring-tag"]
+
+[project.urls]
+Homepage = "https://github.com/The-Shadowserver-Foundation/django-mitre"
+Issues = "https://github.com/The-Shadowserver-Foundation/django-mitre/issues"
+
+
+[tool.hatch.build.targets.sdist]
+exclude = [".*/*", "example"]
+
+
+[tool.hatch.build.targets.wheel]
+packages = ["django_mitre"]
+only-packages = true
+artifacts = ["**/templates", "**/static"]
+
+
+[tool.ruff]
+line-length = 98
+indent-width = 4
+target-version = "py310"
+exclude = [
+    "example",
+]
+
+[tool.ruff.lint]
+select = [
+    # pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # pyupgrade
+    "UP",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # isort
+    "I",
+    # mccabe
+    "C",
+]
+ignore = [ "F403" ]
+
+[tool.ruff.lint.isort]
+# Use a double line break after each import block.
+lines-after-imports = 2

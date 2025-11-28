@@ -1,0 +1,23 @@
+{% extends 'mitrecore/detail.html' %}
+{% load static %}
+{% load django_filtering_ui from django_filtering_ui %}
+
+
+{% block javascripts %}
+    {{ block.super }}
+    {% with entrypoint='filtering' %}
+        {% django_filtering_ui %}
+    {% endwith %}
+{% endblock %}
+
+{% block content %}
+    {% block content_title %}
+        {% if title %}
+            <h2>{{ title }}</h2>
+        {% else %}
+            <h2>Filter</h2>
+        {% endif %}
+    {% endblock %}
+
+    <div id="vue-app"></div>
+{% endblock %}

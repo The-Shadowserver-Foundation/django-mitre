@@ -1,0 +1,25 @@
+{# This is the default base template for this package. #}
+{# It is recommended that you set the `PROJECT_BASE_TEMPLATE` setting to the base template for your project. #}
+{# Your base template likely won't align with the blocks in our base template, but you can create a shim as needed. #}
+
+<html>
+  <head>
+    {% block stylesheets %}
+    {% endblock stylesheets %}
+  </head>
+  <body>
+    {% block nav %}
+      <ul>
+        <li><a href="{% url 'mitreattack:index' %}">ATT&amp;CK</a></li>
+        <li><a href="{% url 'mitrembc:index' %}">Malware Behavior Catalog (MBC)</a></li>
+      </ul>
+    {% endblock nav %}
+
+    {% block content %}
+    {% endblock content %}
+
+    {% block javascripts %}
+      <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
+    {% endblock javascripts %}
+  </body>
+</html>

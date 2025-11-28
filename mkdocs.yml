@@ -1,0 +1,17 @@
+site_name: Django MITRE
+repo_url: https://github.com/The-Shadowserver-Foundation/django-mitre
+edit_uri: /The-Shadowserver-Foundation/django-mitre/edit/main/docs/
+
+copyright: Copyright &copy; 2025 <a href="https://shadowserver.org">The Shadowserver Foundation</a>.
+
+theme: readthedocs
+
+nav:
+  - Install: install.md
+  - Example: example.md
+  - Contribute: contribute.md
+  - Developer Notes: dev-notes.md
+not_in_nav: /release.md
+
+markdown_extensions:
+  - toc

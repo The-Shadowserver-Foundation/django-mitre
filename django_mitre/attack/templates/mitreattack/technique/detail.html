@@ -1,0 +1,47 @@
+{% extends 'mitrecore/detail.html' %}
+{% load markdown from mitrecore.markdown %}
+{% load mitreattack_tags %}
+
+
+{% block content_details %}
+  <div class="mitreattack-details-panel">
+    {% if object.major_technique %}
+      <div class="detail">
+        <span class="label">Sub-technique of: </span><span class="value"><a href="{% model_url object.major_technique 'detail' %}">{{ object.major_technique.name }}</a></span>
+      </div>
+    {% endif %}
+    <div class="detail">
+      <span class="label">Tactic: </span>
+      <span class="value">
+        {% for tactic in object.tactic_set.all %}
+          <a href="{% model_url tactic 'detail' %}">{{ tactic.name }}</a>{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+      </span>
+    </div>
+    <div class="detail">
+      <span class="label">Platforms: </span><span class="value">{{ object.platforms|join:", " }}</span>
+    </div>
+    <div class="detail">
+      <span class="label">System Requirements: </span><span class="value">{{ object.system_requirements }}</span>
+    </div>
+    <div class="detail">
+      <span class="label">Permissions Required: </span><span class="value">{{ object.permissions_required|join:", " }}</span>
+    </div>
+    <div class="detail">
+      <span class="label">Version: </span><span class="value">{{ object.version }}</span>
+    </div>
+  </div>
+{% endblock %}
+
+
+{% block content_model_references %}
+  {# If it's been revoked, place the refence it's revoking information at the top of the listing. #}
+  {% display_mitre_source_references_by_type 'revoked-by' title='Obsoleted By' %}
+  {% display_mitre_target_references_by_type 'subtechnique-of' title='Sub-techniques' %}
+  {% display_mitre_target_references_by_type 'uses' title='Procedure Examples' %}
+  {% display_mitre_target_references_by_type 'mitigates' title='Mitigations' %}
+  {% display_mitre_target_detects_references title='Detections' %}
+  <div class="mitreattack-technique-detection-description">
+    {{ object.detection_description | markdown | safe }}
+  </div>
+{% endblock %}

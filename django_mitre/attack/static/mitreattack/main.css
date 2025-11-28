@@ -1,0 +1,85 @@
+table#mitreattack-matrix {
+  display: block;
+  overflow-x: auto;
+  border: 1px solid var(--shade-black);
+  height: 50vh;
+}
+table#mitreattack-matrix thead {
+  background-color: var(--shade-white);
+  position: sticky;
+  z-index: 100;
+  top: 0;
+}
+table#mitreattack-matrix thead th {
+  text-align: center;
+  padding: 10px;
+  min-width: 14em;
+  max-width: 14em;
+}
+table#mitreattack-matrix thead th:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 100%;
+}
+table#mitreattack-matrix thead th:after {
+  bottom: -1px;
+  border-bottom: 2px solid var(--shade-black);
+}
+table#mitreattack-matrix td {
+  vertical-align: top;
+  border-right: 1px dashed var(--shade-black);
+}
+table#mitreattack-matrix td:last-child {
+  border-right: none;
+}
+table#mitreattack-matrix ul.major_techniques > li > button {
+  float: right;
+}
+table#mitreattack-matrix ul {
+  padding-bottom: 2px;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+table#mitreattack-matrix li {
+  list-style-type: none;
+  display: block;
+  border: 1px solid var(--shade-pale);
+  border-radius: 5px;
+  padding: 10px;
+  background-color: var(--shade-pale);
+}
+table#mitreattack-matrix li li {
+  list-style-type: none;
+  background-color: var(--shade-off-mid);
+}
+table#mitreattack-matrix li.filter-out {
+  display: none;
+}
+
+.mitreattack-details-panel {
+  display: block;
+  overflow-x: auto;
+  float: right;
+  background-color: rgba(var(--color-triple-blue), 0.15);
+  padding: 10px;
+  margin: 10px;
+  min-width: 34vh;
+  max-width: 30em;
+}
+.mitreattack-details-panel .detail {
+  padding-bottom: 10px;
+}
+.mitreattack-details-panel .detail .label {
+  font-weight: bold;
+  padding-right: 5px;
+}
+.mitreattack-lookup-by-id-box {
+  display: block;
+  overflow-x: auto;
+  float: right;
+  padding: 10px;
+  margin: 10px;
+  min-width: 34vh;
+  max-width: 30em;
+}

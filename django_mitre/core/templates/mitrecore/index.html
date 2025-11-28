@@ -1,0 +1,121 @@
+{% extends project_base_template|default:'mitrecore/base.html' %}
+{% load static from static %}
+{% load django_filtering_ui from django_filtering_ui %}
+
+{% load mitreattack_tags %}
+{% load field_value from mitrecore.model %}
+{% load markdown from mitrecore.markdown %}
+
+{% block stylesheets %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'mitreattack/main.css' %}">
+{% endblock %}
+
+{% block javascripts %}
+    {{ block.super }}
+    <script src="{% static 'mitreattack/main.js' %}"></script>
+    {% with entrypoint='listing' %}
+        {% django_filtering_ui %}
+    {% endwith %}
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="rgt">
+        <ul class="spaced">
+            {% block content_actions %}
+                {% url filter_url_name as filter_url %}
+                {% if is_filtered %}
+                    <li><a class="btn" href="{{ request.path }}">Clear filter</a></li>
+                    <li><a class="btn" href="{{ filter_url }}{% querystring page=None %}">Edit filter</a></li>
+                {% else %}
+                    <li><a class="btn" href="{{ filter_url }}">{% if filter_form %}Advanced filters{% else %}Filter list{% endif %}</a></li>
+                {% endif %}
+            {% endblock %}
+        </ul>
+    </div>
+
+    {% block content_title %}
+        {% if title %}
+            <h2>{{ title }}</h2>
+        {% else %}
+            <h2>Index</h2>
+        {% endif %}
+    {% endblock %}
+
+    {% if object_list or is_filtered or show_empty_results %}
+
+        {% block content_table_actions %}
+            <div id="vue-app"></div>
+        {% endblock %}
+
+        {% block content_table %}
+            <table class="table">
+                <tr>
+                    {% if actions_for_selected %}
+                        <th><input type="checkbox" class="action-toggle"></th>
+                    {% endif %}
+
+                    {% block column_headers %}
+                        {% for field in view.get_model_fields %}
+                            {% if field.name == 'mitre_id' %}
+                                <th>Mitre ID</th>
+                            {% elif field.name == 'short_description' %}
+                                <th>Description</th>
+                            {% else %}
+                                <th>{{ field.verbose_name|capfirst }}</th>
+                            {% endif %}
+                        {% endfor %}
+                    {% endblock %}
+
+                    {% if not view.table_no_actions %}
+                        <th>Actions</th>
+                    {% endif %}
+                </tr>
+
+                {% for object in object_list %}
+                    <tr>
+                        {% if actions_for_selected %}
+                            {# {% disallowed_actions_for_instance object as disallowed_actions %} #}
+                            {# <td class="collapse"><input type="checkbox" class="action-select{% for action in disallowed_actions %} action-select-disallow-{{ action }}{% endfor %}" name="action_select" value="{{ object|model_and_pk }}"></td>  #}
+                        {% endif %}
+
+                        {% block columns %}
+                            {% for field in view.get_model_fields %}
+                                {% if field.name == 'short_description' %}
+                            {% field_value field.name as description %}
+                                    <td class="truncate">{{ description | markdown | safe }}</td>
+                                {% else %}
+                                    <td class="truncate">{% field_value field.name %}</td>
+                                {% endif %}
+                            {% endfor %}
+                        {% endblock %}
+
+                        {% if not view.table_no_actions %}
+                            <td class="collapse">
+                                <ul class="inline">
+                                    {% block actions %}
+                                        <li><a href="{% model_url object 'detail' %}">View</a></li>
+                                    {% endblock %}
+                                </ul>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+
+            </table>
+        {% endblock %}
+
+    {% endif %}
+
+    {% if not object_list %}
+        {% block empty_message %}
+            <p>Run the data ingester to populate the data.</p>
+        {% endblock %}
+    {% endif %}
+
+    {% block after_content_table %}
+    {% endblock %}
+
+{% endblock %}

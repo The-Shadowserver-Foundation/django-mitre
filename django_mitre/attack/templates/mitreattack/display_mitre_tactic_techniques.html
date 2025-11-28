@@ -1,0 +1,33 @@
+{% load markdown from mitrecore.markdown %}
+{% load mitreattack_tags %}
+
+<h3 class="underline">{{ title|title }}</h3>
+
+{% for object, subtechniques in techniques.items %}
+
+  <h4><a href="{% model_url object 'detail' %}">{{ object.name|title }}</a></h4>
+  <div>{{ object.description | markdown | safe }}</div>
+
+  {% if subtechniques %}
+    <h5>Sub-techniques</h5>
+    <table class="table">
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+      {% for object in subtechniques %}
+        <tr>
+          <td class="truncate">
+            <a href="{% model_url object 'detail' %}">
+              {{ object.name }}
+            </a>
+          </td>
+          <td class="truncate">
+            {{ object.description | first_sentence | markdown | safe }}
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+  {% endif %}
+
+{% endfor %}

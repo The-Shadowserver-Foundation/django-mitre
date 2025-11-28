@@ -1,0 +1,75 @@
+{% extends project_base_template|default:'mitrecore/base.html' %}
+{% load static from static %}
+{% load markdown from mitrecore.markdown %}
+
+{% block content %}
+
+    <div class="rgt">
+        <ul class="spaced">
+            {% if section_help_url %}
+                <li><a class="btn btn-auto-width title-tooltip" target="_blank" title="View help for this section" href="{{ section_help_url }}"><i class="glyphicon glyphicon-question-sign"></i></a></li>
+            {% endif %}
+        </ul>
+    </div>
+
+    <div class="mitreattack-lookup-by-id-box">
+      <form id="mitreattack-lookup-by-id">
+        <label>Jump to Mitre record by ID: </label>
+        <input name="mitre_id" placeholder="(e.g. T1026)"></input>
+      </form>
+    </div>
+
+    {% block content_title %}
+      <h2>{{ title }} <small>({{ mitre_id }}) {{ title_suffix }}</small></h2>
+    {% endblock %}
+
+    {% block content_lock %}
+    {% endblock %}
+
+    {% block content_notice %}
+    {% endblock %}
+
+    {% block content_fields %}
+
+      {% block content_details %}
+      {% endblock %}
+
+      {% block content_description %}
+        <div>
+          {{ object.description | markdown | safe }}
+        </div>
+      {% endblock %}
+
+      {# Content tabs within the content body #}
+      {% block content_tabs %}
+        {# <ul class="tabs">       #}
+        {#   <li data-tab="...">   #}
+        {#     <a href="#">...</a> #}
+        {#   </li>                 #}
+        {# </ul>                   #}
+      {% endblock %}
+
+      {% block content_tab_contents %}
+        {# If adding tabbed content to this block,                  #}
+        {# make sure to use the following to include the default    #}
+        {# content_model_references block.                          #}
+        {# <div class="tab-content" data-tab-id="details">          #}
+        {#   {{ block.super }}                                      #}
+        {# </div>                                                   #}
+        {% block content_model_references %}
+        {% endblock %}
+      {% endblock %}
+
+    {% endblock %}
+
+{% endblock %}
+
+{% block stylesheets %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'mitreattack/main.css' %}">
+{% endblock %}
+
+{% block javascripts %}
+    {{ block.super }}
+    <script src="{% static 'mitreattack/main.js' %}"></script>
+{% endblock %}
