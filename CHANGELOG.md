@@ -1,3 +1,7 @@
+## Unreleased
+
+- Fixed: Model title displayed on index listing pages.
+
 ## v0.2.0 - 2025-Dec-15
 
 - Added: Add table header filters to easily filter on the column's data.
