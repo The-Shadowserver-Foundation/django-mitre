@@ -1,3 +1,7 @@
+## v0.2.2 - 2026-May-15
+
+- Updated to latest version of `django-filtering`
+
 ## v0.2.1 - 2025-Dec-18
 
 - Added `class="table-filters"` to the tabled form filters row to distinguish from the primary header row.
