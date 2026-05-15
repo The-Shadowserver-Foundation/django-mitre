@@ -14,7 +14,7 @@ from django.urls import reverse
 from django.utils.decorators import classonlymethod
 from django.views.generic import DetailView, FormView, ListView
 from django.views.generic.edit import FormMixin
-from django_filtering.form import flat_filtering_form_factory
+from django_filtering.forms import flat_filtering_form_factory
 
 from ..forms import FilterForm
 from ..utils import model_fields, model_url_name
