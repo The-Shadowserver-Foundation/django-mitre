@@ -1,4 +1,5 @@
 import json
+import traceback
 from base64 import b64decode
 
 import github
@@ -185,6 +186,7 @@ class BaseStixIngestionCommand(BaseCommand, IngestionLoggingMixIn):
             self.atomic_ingest()
         except Exception:
             if self.options["pdb"]:
+                traceback.print_exc()
                 pdb.post_mortem()
             else:
                 raise
