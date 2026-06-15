@@ -104,7 +104,7 @@ class IngestionLoggingMixIn:
         if self.options["verbosity"] <= 2:
             return
         kwargs["style_func"] = lambda s: f"\x1b[32m{s}\x1b[0m"
-        self.log("\u2714 created {message}", **kwargs)
+        self.log(f"\u2714 created {message}", **kwargs)
 
     def log_updated(self, message, **kwargs):
         """Log an update of something"""
@@ -112,19 +112,19 @@ class IngestionLoggingMixIn:
             return
         # Wrap text in ANSI dim and reset escapes (i.e. grey it out).
         kwargs["style_func"] = lambda s: f"\x1b[33m{s}\x1b[0m"
-        self.log("\u2714 updated {message}", **kwargs)
+        self.log(f"\u2714 updated {message}", **kwargs)
 
     def log_error(self, message, **kwargs):
         """Log an update of something"""
         # Wrap text in ANSI dim and reset escapes (i.e. grey it out).
         kwargs["style_func"] = lambda s: f"\x1b[31m{s}\x1b[0m"
-        self.log("\u2718 error {message}", **kwargs)
+        self.log(f"\u2718 error {message}", **kwargs)
 
     def log_warning(self, message, **kwargs):
         """Log a warning"""
         # Wrap text in ANSI dim and reset escapes (i.e. grey it out).
         kwargs["style_func"] = lambda s: f"\x1b[34m{s}\x1b[0m"
-        self.log("\u2706 warning {message}", **kwargs)
+        self.log(f"\u2706 warning {message}", **kwargs)
 
     def log_form_errors(self, id, form):
         """Log the errors of the given form"""
