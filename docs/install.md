@@ -41,7 +41,7 @@ However, requests without the token set should be fine for simple one time inges
 There is an assumption that `jquery` is globally available in your base template.
 If this is not the case, you'll need to add a jquery script tag to the templates.
 
-Include the URLs to visualize and search the contents. In you project's `urls.py` add:
+Include the URLs to visualize and search the contents. In your project's `urls.py` add:
 
 ```python
 urlpatterns = [
