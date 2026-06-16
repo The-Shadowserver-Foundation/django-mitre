@@ -7,6 +7,7 @@ Add the following to the installed apps setting:
 ```python
 INSTALLED_APPS = [
     # ...
+    "django_filtering",
     "django_filtering_ui",
     "django_mitre.core",
     "django_mitre.attack",

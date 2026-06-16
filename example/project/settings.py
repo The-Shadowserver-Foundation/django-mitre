@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "django_extensions",
+    "django_filtering",
     "django_filtering_ui",
     "django_mitre.core",
     "django_mitre.attack",
