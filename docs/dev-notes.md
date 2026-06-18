@@ -10,6 +10,8 @@ The data contains two identifiers: STIX ID and MITRE ID. These appear to be unch
 
 Removal of data looks to be done through the use of the STIX common property: `revoked`. This means the data continues to live on, though for all intensive purposes it is abandoned by the author. Our usage of this data has been to append "(revoked)" to the name of the item. The `revoked-by` reference relationship should indicate what if anything has replaced it.
 
+MITRE ATT&CK data is versioned as `<major>.<minor>`. Minor versions contain bug fixes. In MITRE's own website you'll see that you can only reference the data by major version. Therefore, only plan to use the latest release of the major version, because prior releases may not correctly parse.
+
 ### MITRE ATT&CK data import procedure
 
 The [MITRE ATT&CK STIX 2.1 formatted data](https://github.com/mitre-attack/attack-stix-data) is the source of this package's data.
