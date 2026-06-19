@@ -185,6 +185,10 @@ class DataSource(BaseModel, DescriptiveMixIn, MitreIdentifiableMixIn):
 
     Uses the custom ``x-mitre-data-source`` STIX 2.1 data type.
 
+    The ATT&CK Data Model v3.3.0 deprecates this data-type.
+    https://mitre-attack.github.io/attack-data-model/schemas/changelog-schema/#v330-28-october-2025
+    This appears to be replaced by Detection Strategy that links to Data Components.
+
     """
 
     stix_data_types = ("x-mitre-data-source",)
@@ -194,7 +198,7 @@ class DataSource(BaseModel, DescriptiveMixIn, MitreIdentifiableMixIn):
     contributors = models.JSONField(null=True, blank=True)
 
 
-class DataComponent(BaseModel, DescriptiveMixIn):
+class DataComponent(BaseModel, DescriptiveMixIn, MitreIdentifiableMixIn):
     """Data Source in Mitre Att&ck even through it's classified as a component
 
     Uses the custom ``x-mitre-data-component`` STIX 2.1 data type.
@@ -202,7 +206,6 @@ class DataComponent(BaseModel, DescriptiveMixIn):
     """
 
     stix_data_types = ("x-mitre-data-component",)
-    data_source_ref = models.ForeignKey(DataSource, on_delete=models.CASCADE)
 
 
 class Mitigation(BaseModel, DescriptiveMixIn, MitreIdentifiableMixIn):

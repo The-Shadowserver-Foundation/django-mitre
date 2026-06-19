@@ -11,6 +11,7 @@ from ..patterns import MATCHABLE_MODEL_PATTERNS
 EXAMPLE_IDS = (
     "C0004",
     "DS1010",
+    "DC0808",
     "G2020",
     "M3030",
     "S4040",

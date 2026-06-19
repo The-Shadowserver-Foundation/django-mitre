@@ -21,6 +21,7 @@ VIEWABLE_MODELS_AND_PK_PATTERNS = (
     # [<model>, <pattern>],
     patterns.CAMPAIGN_ID_PATTERN,
     patterns.DATASOURCE_ID_PATTERN,
+    patterns.DATACOMPONENT_ID_PATTERN,
     patterns.GROUP_ID_PATTERN,
     patterns.MATRIX_ID_PATTERN,
     patterns.MITIGATION_ID_PATTERN,

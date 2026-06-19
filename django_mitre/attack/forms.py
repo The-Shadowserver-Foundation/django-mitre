@@ -430,17 +430,9 @@ class DataSourceForm(_get_form_base_class_by_model(DataSource)):
 
 @register_model_form(DataComponent)
 class DataComponentForm(_get_form_base_class_by_model(DataComponent)):
-    x_mitre_data_source_ref = StixIdentifierField(required=True)
-
     class Meta:
         model = DataComponent
         fields = "__all__"
-        exclude = ("data_source_ref",)
-
-    def _save_m2m(self):
-        # Save the ForeignKey field
-        self.instance.data_source_ref = self.cleaned_data["x_mitre_data_source_ref"]
-        super()._save_m2m()
 
     def save(self, *args, **kwargs):
         should_commit = kwargs.get("commit", True)

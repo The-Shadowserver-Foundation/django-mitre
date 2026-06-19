@@ -50,6 +50,18 @@ class DataSourceDetailView(BaseDetailView):
     slug_field = "mitre_id"
 
     def get_title(self):
+        suffix = " [DEPRECATED]"
+        if self.object.revoked:
+            suffix += " (revoked)"
+        return f"{self.object.name}{suffix}"
+
+
+class DataComponentDetailView(BaseDetailView):
+    model = models.DataComponent
+    fields = ["mitre_id", "name", "short_description"]
+    slug_field = "mitre_id"
+
+    def get_title(self):
         suffix = ""
         if self.object.revoked:
             suffix = " (revoked)"

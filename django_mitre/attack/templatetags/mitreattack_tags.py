@@ -72,20 +72,6 @@ def display_mitre_source_references_by_type(context, relationship_type, title=No
     }
 
 
-@register.inclusion_tag(
-    "mitreattack/display_mitre_data_component_references.html", takes_context=True
-)
-def display_mitre_data_component_references(context):
-    data_components = context["object"].datacomponent_set.get_active()
-    return {
-        # view is needed by templatetag in the template.
-        "view": context["view"],
-        "data_source": context["object"],
-        "title": "Data Components",
-        "data_components": data_components,
-    }
-
-
 @register.inclusion_tag("mitreattack/display_mitre_tactic_techniques.html", takes_context=True)
 def display_mitre_tactic_techniques(context, fields="name,description"):
     qs = context["object"].techniques.get_active()

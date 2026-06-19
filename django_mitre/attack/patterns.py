@@ -6,6 +6,7 @@ These patterns uniquely indentify objects by MITRE ID using a character prefix.
 This package uses these patterns to create url paths, search by identifier,
 rewrite urls in content description, etc.
 """
+
 import re
 
 
@@ -36,6 +37,10 @@ DATASOURCE_ID_PATTERN = (
     f"{app_label}.datasource",
     re.compile(r"(?P<slug>DS[0-9]+)", re.I),
 )
+DATACOMPONENT_ID_PATTERN = (
+    f"{app_label}.datacomponent",
+    re.compile(r"(?P<slug>DC[0-9]+)", re.I),
+)
 GROUP_ID_PATTERN = (
     f"{app_label}.group",
     re.compile(r"(?P<slug>G[0-9]+)", re.I),
@@ -64,6 +69,7 @@ TECHNIQUE_ID_PATTERN = (
 MATCHABLE_MODEL_PATTERNS = (
     CAMPAIGN_ID_PATTERN,
     DATASOURCE_ID_PATTERN,
+    DATACOMPONENT_ID_PATTERN,
     GROUP_ID_PATTERN,
     MITIGATION_ID_PATTERN,
     SOFTWARE_ID_PATTERN,

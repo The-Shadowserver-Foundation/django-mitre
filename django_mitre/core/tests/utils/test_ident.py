@@ -18,6 +18,7 @@ from ...utils.ident import MATCHABLE_MODEL_PATTERNS_BY_CONTEXT
 ATTACK_EXAMPLE_IDS = (
     ["C7070"],
     ["DS1010"],
+    ["DC0808"],
     ["G2020"],
     ["M3030"],
     ["S4040"],
