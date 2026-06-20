@@ -430,9 +430,12 @@ class DataSourceForm(_get_form_base_class_by_model(DataSource)):
 
 @register_model_form(DataComponent)
 class DataComponentForm(_get_form_base_class_by_model(DataComponent)):
+    x_mitre_log_sources = forms.JSONField(required=False)
+
     class Meta:
         model = DataComponent
         fields = "__all__"
+        exclude = ("log_sources",)
 
     def save(self, *args, **kwargs):
         should_commit = kwargs.get("commit", True)
@@ -440,7 +443,12 @@ class DataComponentForm(_get_form_base_class_by_model(DataComponent)):
         kwargs["commit"] = False
 
         obj = super().save(*args, **kwargs)
-        # save(commit=False) create the `save_m2m` method
+        obj.log_sources = (
+            sorted(self.cleaned_data["x_mitre_log_sources"], key=lambda x: x["name"].lower())
+            if self.cleaned_data["x_mitre_log_sources"]
+            else None
+        )
+
         self.save_m2m()
 
         # Respect the caller's original intent

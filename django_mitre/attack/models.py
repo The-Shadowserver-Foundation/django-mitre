@@ -206,6 +206,7 @@ class DataComponent(BaseModel, DescriptiveMixIn, MitreIdentifiableMixIn):
     """
 
     stix_data_types = ("x-mitre-data-component",)
+    log_sources = models.JSONField(null=True, blank=True)
 
 
 class Mitigation(BaseModel, DescriptiveMixIn, MitreIdentifiableMixIn):

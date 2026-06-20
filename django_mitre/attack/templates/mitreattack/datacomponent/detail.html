@@ -4,6 +4,18 @@
 {% block content_model_references %}
   {# If it's been revoked, place the refence it's revoking information at the top of the listing. #}
   {% display_mitre_source_references_by_type 'revoked-by' title='Obsoleted By' %}
+
+  <h3 class="underline">Log Sources</h3>
+  <table>
+      <tr>
+        <th>Name</th>
+        <th>Channel</th>
+      </tr>
+        {% for item in object.log_sources %}
+      <tr><td>{{ item.name }}</td><td>{{ item.channel }}</td></tr>
+        {% endfor %}
+  </table>
+
   <h3 class="underline">Detects</h3>
   {% display_mitre_source_references_by_type 'detects' %}
 {% endblock %}
