@@ -166,18 +166,9 @@ class Technique(BaseModel, DescriptiveMixIn, MitreIdentifiableMixIn):
         null=True,
         blank=True,
     )
-    detection_description = models.TextField(null=True, blank=True)
     platforms = models.JSONField(null=True, blank=True)
     version = models.CharField(max_length=16)
     contributors = models.JSONField(null=True, blank=True)
-    permissions_required = models.JSONField(null=True, blank=True)
-    system_requirements = models.CharField(null=True, blank=True, max_length=512)
-    # The `x_mitre_data_sources` data on the surface would seem
-    # to link with DataSources, but more precisely they mostly link
-    # with specific DataComponents. However, some of the names
-    # in this value do not match with either model.
-    # data_sources = models.ManyToManyField('DataSource')
-    data_sources = models.JSONField(null=True, blank=True)
 
 
 class DataSource(BaseModel, DescriptiveMixIn, MitreIdentifiableMixIn):

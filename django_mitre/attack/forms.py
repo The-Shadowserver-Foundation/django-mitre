@@ -295,13 +295,9 @@ class TechniqueForm(_get_form_base_class_by_model(Technique)):
     # ]
     kill_chain_phases = forms.JSONField(required=False)
     x_mitre_is_subtechnique = forms.BooleanField(required=False, initial=False)
-    x_mitre_detection = forms.CharField(required=False)
     x_mitre_platforms = forms.JSONField(required=False)
     x_mitre_version = forms.CharField(required=False)
     x_mitre_contributors = forms.JSONField(required=False)
-    x_mitre_permissions_required = forms.JSONField(required=False)
-    x_mitre_data_sources = forms.JSONField(required=False)
-    x_mitre_system_requirements = forms.JSONField(required=False)
 
     class Meta:
         model = Technique
@@ -309,13 +305,9 @@ class TechniqueForm(_get_form_base_class_by_model(Technique)):
         exclude = (
             "is_subtechnique",
             "major_technique",
-            "detection_description",
             "platforms",
             "version",
             "contributors",
-            "permissions_required",
-            "data_sources",
-            "system_requirements",
         )
 
     def _save_m2m(self):
@@ -342,17 +334,9 @@ class TechniqueForm(_get_form_base_class_by_model(Technique)):
         kwargs["commit"] = False
 
         obj = super().save(*args, **kwargs)
-        obj.detection_description = self.cleaned_data["x_mitre_detection"]
         obj.platforms = self.cleaned_data["x_mitre_platforms"]
         obj.version = self.cleaned_data["x_mitre_version"]
         obj.contributors = self.cleaned_data["x_mitre_contributors"]
-        obj.permissions_required = self.cleaned_data["x_mitre_permissions_required"]
-        obj.system_requirements = (
-            self.cleaned_data["x_mitre_system_requirements"][0]
-            if self.cleaned_data.get("x_mitre_system_requirements")
-            else None
-        )
-        obj.data_sources = self.cleaned_data["x_mitre_data_sources"]
 
         # Save specific re-mapped fields
         obj.is_subtechnique = self.cleaned_data["x_mitre_is_subtechnique"]

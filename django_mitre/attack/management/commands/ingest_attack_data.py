@@ -198,10 +198,7 @@ class Command(BaseStixIngestionCommand):
             # Ignore revoked and deprecated records
             for obj in model.objects.all():
                 has_changed = False
-                for field in (
-                    "description",
-                    "detection_description",
-                ):
+                for field in ("description",):
                     has_changed = rewrite_markdown(obj, field) or has_changed
                 if has_changed:
                     obj.save()
