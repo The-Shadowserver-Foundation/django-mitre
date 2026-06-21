@@ -10,6 +10,7 @@ from ..core.models import MitreIdentifiableMixIn
 
 
 __all__ = (
+    "Asset",
     "Collection",
     "Group",
     "Software",
@@ -320,7 +321,24 @@ class Campaign(BaseModel, DescriptiveMixIn, MitreIdentifiableMixIn):
     last_seen_citation = models.CharField(max_length=255)
 
 
+class Asset(BaseModel, DescriptiveMixIn, MitreIdentifiableMixIn):
+    """
+    Asset in Mitre Attack
+
+    Uses the ``x-mitre-asset`` data type.
+    """
+
+    stix_data_types = ("x-mitre-asset",)
+    version = models.CharField(max_length=16)
+    contributors = models.JSONField(null=True, blank=True)
+    platforms = models.JSONField()
+    domains = models.JSONField()
+    sectors = models.JSONField(blank=True, null=True)
+    related_assets = models.JSONField(blank=True, null=True)
+
+
 ALL_MODELS = (
+    Asset,
     Campaign,
     Collection,
     Group,

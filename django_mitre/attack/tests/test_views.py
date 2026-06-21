@@ -9,6 +9,7 @@ from ..patterns import MATCHABLE_MODEL_PATTERNS
 
 
 EXAMPLE_IDS = (
+    "A9090",
     "C0004",
     "DS1010",
     "DC0808",
@@ -52,7 +53,7 @@ class RedirectByIdTestCase(TestCase):
     def test_no_matching_id(self):
         for id in (
             "bogus",
-            "A7070",
+            "Y7070",
         ):
             url = reverse("mitreattack:redirect_by_mitre_id", args=[id])
             resp = self.client.get(url)

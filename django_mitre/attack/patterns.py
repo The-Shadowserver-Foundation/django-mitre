@@ -29,6 +29,10 @@ app_label = "mitreattack"
 # However, they are written for case exact matching in view url registration,
 # because we don't absolutely know that MITRE won't change to a character
 # case-sensitive identifier scheme.
+ASSET_ID_PATTERN = (
+    f"{app_label}.asset",
+    re.compile(r"(?P<slug>A[0-9]+)", re.I),
+)
 CAMPAIGN_ID_PATTERN = (
     f"{app_label}.campaign",
     re.compile(r"(?P<slug>C[0-9]+)", re.I),
@@ -67,6 +71,7 @@ TECHNIQUE_ID_PATTERN = (
 )
 
 MATCHABLE_MODEL_PATTERNS = (
+    ASSET_ID_PATTERN,
     CAMPAIGN_ID_PATTERN,
     DATASOURCE_ID_PATTERN,
     DATACOMPONENT_ID_PATTERN,

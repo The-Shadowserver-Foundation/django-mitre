@@ -22,6 +22,7 @@ ONE_MEGABYTE = 1024 * 1024
 MITRE_CONTENT_TYPES = (
     # Collection gets associated with all other content-types
     "x-mitre-collection",
+    "x-mitre-asset",
     "marking-definition",
     "course-of-action",
     "identity",

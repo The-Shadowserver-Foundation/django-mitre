@@ -20,6 +20,7 @@ from django.db import models
 
 from .models import (
     ALL_MODELS,
+    Asset,
     Campaign,
     DataComponent,
     DataSource,
@@ -509,6 +510,47 @@ class CampaignForm(_get_form_base_class_by_model(Campaign)):
         obj.version = self.cleaned_data["x_mitre_version"]
         obj.first_seen_citation = self.cleaned_data["x_mitre_first_seen_citation"]
         obj.last_seen_citation = self.cleaned_data["x_mitre_last_seen_citation"]
+
+        # Respect the caller's original intent
+        if should_commit:
+            obj.save()
+
+        return obj
+
+
+@register_model_form(Asset)
+class AssetForm(_get_form_base_class_by_model(Asset)):
+    x_mitre_version = forms.CharField(required=False)
+    x_mitre_contributors = forms.JSONField(required=False)
+    x_mitre_platforms = forms.JSONField(required=True)
+    x_mitre_domains = forms.JSONField(required=True)
+    x_mitre_sectors = forms.JSONField(required=False)
+    x_mitre_related_assets = forms.JSONField(required=False)
+
+    class Meta:
+        model = Asset
+        fields = "__all__"
+        exclude = (
+            "version",
+            "contributors",
+            "platforms",
+            "domains",
+            "sectors",
+            "related_assets",
+        )
+
+    def save(self, *args, **kwargs):
+        should_commit = kwargs.get("commit", True)
+        # Change commit so relationships can be made
+        kwargs["commit"] = False
+
+        obj = super().save(*args, **kwargs)
+        obj.version = self.cleaned_data["x_mitre_version"]
+        obj.contributors = self.cleaned_data["x_mitre_contributors"]
+        obj.platforms = self.cleaned_data["x_mitre_platforms"]
+        obj.domains = self.cleaned_data["x_mitre_domains"]
+        obj.sectors = self.cleaned_data["x_mitre_sectors"]
+        obj.related_assets = self.cleaned_data["x_mitre_related_assets"]
 
         # Respect the caller's original intent
         if should_commit:

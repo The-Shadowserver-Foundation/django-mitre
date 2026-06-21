@@ -10,6 +10,7 @@ from ..utils import get_model_by_id, get_object_by_id
 
 
 EXAMPLE_IDS = (
+    ["A9090"],
     ["C0004"],
     ["DS1010"],
     ["DC0808"],
@@ -36,7 +37,7 @@ class GetModelByIdTestCase(unittest.TestCase):
     def test_failure_to_match(self):
         for id in (
             "bogus",
-            "A7070",
+            "Y7070",
         ):
             model = self.target(id)
             self.assertIsNone(model)
@@ -64,7 +65,7 @@ class GetObjectByIdTestCase(TestCase):
     def test_failure_to_match(self):
         for id in (
             "bogus",
-            "A7070",
+            "Y7070",
         ):
             with self.assertRaises(ValueError):
                 self.target(id)

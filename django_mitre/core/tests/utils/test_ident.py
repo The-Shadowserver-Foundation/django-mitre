@@ -16,6 +16,7 @@ from ...utils.ident import MATCHABLE_MODEL_PATTERNS_BY_CONTEXT
 
 
 ATTACK_EXAMPLE_IDS = (
+    ["A9090"],
     ["C7070"],
     ["DS1010"],
     ["DC0808"],
@@ -46,7 +47,7 @@ class GetModelContextTestCase(unittest.TestCase):
     def test_failure_to_match(self):
         for id in (
             "bogus",
-            "A7070",
+            "Y7070",
         ):
             with self.assertRaises(ValueError):
                 self.target(id)
@@ -80,7 +81,7 @@ class GetModelByIdTestCase(unittest.TestCase):
     def test_failure_to_match(self):
         for id in (
             "bogus",
-            "A7070",
+            "Y7070",
         ):
             model = self.target(id)
             self.assertIsNone(model)
@@ -116,7 +117,7 @@ class GetObjectByIdTestCase(TestCase):
     def test_failure_to_match(self):
         for id in (
             "bogus",
-            "A7070",
+            "Y7070",
         ):
             with self.assertRaises(ValueError):
                 self.target(id)

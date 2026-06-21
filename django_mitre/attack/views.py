@@ -98,3 +98,8 @@ class MitigationDetailView(BaseDetailView):
 class CampaignDetailView(BaseDetailView):
     model = models.Campaign
     slug_field = "mitre_id"
+
+
+class AssetDetailView(BaseDetailView):
+    model = models.Asset
+    slug_field = "mitre_id"

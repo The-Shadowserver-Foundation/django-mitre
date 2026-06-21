@@ -19,6 +19,7 @@ urlpatterns = [
 
 VIEWABLE_MODELS_AND_PK_PATTERNS = (
     # [<model>, <pattern>],
+    patterns.ASSET_ID_PATTERN,
     patterns.CAMPAIGN_ID_PATTERN,
     patterns.DATASOURCE_ID_PATTERN,
     patterns.DATACOMPONENT_ID_PATTERN,

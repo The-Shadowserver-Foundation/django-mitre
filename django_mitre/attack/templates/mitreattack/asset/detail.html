@@ -1,0 +1,46 @@
+{% extends 'mitrecore/detail.html' %}
+{% load markdown from mitrecore.markdown %}
+{% load mitreattack_tags %}
+
+
+{% block content_details %}
+  <div class="mitreattack-details-panel">
+    <div class="detail">
+      <span class="label">Platforms: </span><span class="value">{{ object.platforms|join:", " }}</span>
+    </div>
+    <div class="detail">
+      <span class="label">Domains: </span><span class="value">{{ object.domains|join:", " }}</span>
+    </div>
+    <div class="detail">
+      <span class="label">Sectors: </span><span class="value">{{ object.sectors|join:", " }}</span>
+    </div>
+    <div class="detail">
+      <span class="label">Version: </span><span class="value">{{ object.version }}</span>
+    </div>
+  </div>
+{% endblock %}
+
+
+{% block content_model_references %}
+  {# If it's been revoked, place the refence it's revoking information at the top of the listing. #}
+  {% display_mitre_source_references_by_type 'revoked-by' title='Obsoleted By' %}
+
+  {% if object.related_assets %}
+    <h3 class="underline">Related Assets</h3>
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Sectors</th>
+        <th>Description</th>
+      </tr>
+      {% for related in object.related_assets %}
+        <tr>
+          <td>{{ related.name }}</td>
+          <td>{{ related.related_asset_sectors|join:", " }}</td>
+          <td>{{ related.description }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  {% endif %}
+  {% display_mitre_target_references_by_type 'targets' title='Techniques' %}
+{% endblock %}
