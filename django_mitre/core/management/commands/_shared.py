@@ -130,10 +130,11 @@ class IngestionLoggingMixIn:
 
     def log_form_errors(self, id, form):
         """Log the errors of the given form"""
+        form_class = f"{form.__module__}.{form.__class__.__name__}"
         field_msgs = "\n".join(
-            [f"  - {f} has errors: {', '.join(errs)}" for f, errs in form.errors.items()]
+            [f"    * `{f}` has errors: {', '.join(errs)}" for f, errs in form.errors.items()]
         )
-        msg = f"'{id}' - these fields had errors while parsing {form!r}:\n{field_msgs}"
+        msg = f"'{id}' - these fields had errors while parsing {form_class}:\n{field_msgs}"
         self.log_error(msg)
 
 
