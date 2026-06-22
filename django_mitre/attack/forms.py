@@ -14,12 +14,14 @@ using the ``register_model_form`` decorator.
 """
 
 from contextlib import suppress
+from copy import deepcopy
 
 from django import forms
 from django.db import models
 
 from .models import (
     ALL_MODELS,
+    Analytic,
     Asset,
     Campaign,
     DataComponent,
@@ -86,6 +88,16 @@ def register_model_form(model):
     return decor
 
 
+def lookup_object_via_stix_id(value: str):
+    data_type = value.split("--", 1)[0]
+    try:
+        model = MODEL_CLS_BY_DATA_TYPE[data_type][0]
+    except KeyError as exc:
+        raise ValueError(f"Unknown data-type '{data_type}' cannot be processed") from exc
+    obj = model.objects.get(mitre_stix_identifier=value)
+    return obj
+
+
 class StixIdentifierField(forms.Field):
     """Takes a STIX Identifier of the form ``<content-type>--<uuid>``
     and finds the related object.
@@ -95,22 +107,15 @@ class StixIdentifierField(forms.Field):
     def to_python(self, value):
         if isinstance(value, models.Model):
             return value
-        data_type = value.split("--", 1)[0]
         try:
-            model = MODEL_CLS_BY_DATA_TYPE[data_type][0]
-        except KeyError as exc:
-            raise forms.ValidationError(
-                f"Unknown data-type '{data_type}' cannot be processed",
-                code="invalid",
-            ) from exc
-        try:
-            obj = model.objects.get(mitre_stix_identifier=value)
+            return lookup_object_via_stix_id(value)
+        except ValueError as exc:
+            raise forms.ValidationError(*exc.args, code="invalid") from exc
         except model.DoesNotExist:
             raise forms.ValidationError(
                 f"Object for {value} not found",
                 code="invalid",
             ) from None
-        return obj
 
 
 class MultipleStixIdentifierField(forms.Field):
@@ -551,6 +556,71 @@ class AssetForm(_get_form_base_class_by_model(Asset)):
         obj.domains = self.cleaned_data["x_mitre_domains"]
         obj.sectors = self.cleaned_data["x_mitre_sectors"]
         obj.related_assets = self.cleaned_data["x_mitre_related_assets"]
+
+        # Respect the caller's original intent
+        if should_commit:
+            obj.save()
+
+        return obj
+
+
+@register_model_form(Analytic)
+class AnalyticForm(_get_form_base_class_by_model(Analytic)):
+    x_mitre_platforms = forms.JSONField(required=False)
+    x_mitre_version = forms.CharField(required=False)
+    x_mitre_domains = forms.JSONField(required=True)
+    x_mitre_log_source_references = forms.JSONField(required=False)
+    x_mitre_mutable_elements = forms.JSONField(required=False)
+
+    class Meta:
+        model = Analytic
+        fields = "__all__"
+        exclude = (
+            "platforms",
+            "version",
+            "domains",
+            "data_components",
+            "mutable_elements",
+        )
+
+    def clean_x_mitre_log_source_references(self):
+        refs = self.cleaned_data["x_mitre_log_source_references"]
+        refs = deepcopy(refs) if refs else []
+
+        for ref in refs:
+            stix_id = ref["x_mitre_data_component_ref"]
+            try:
+                ref["obj"] = lookup_object_via_stix_id(stix_id)
+            except ValueError as exc:
+                raise forms.ValidationError(*exc.args, code="invalid") from exc
+            except model.DoesNotExist:
+                raise forms.ValidationError(
+                    f"Object for {stix_id} not found",
+                    code="invalid",
+                ) from None
+        return refs
+
+    def _save_m2m(self):
+        # Must save the instance in order to associate the Tactics
+        self.instance.save()
+
+        for log_source in self.cleaned_data["x_mitre_log_source_references"]:
+            self.instance.data_components.add(log_source["obj"])
+        super()._save_m2m()
+
+    def save(self, *args, **kwargs):
+        should_commit = kwargs.get("commit", True)
+        # Change commit so relationships can be made
+        kwargs["commit"] = False
+
+        obj = super().save(*args, **kwargs)
+        obj.platforms = self.cleaned_data["x_mitre_platforms"]
+        obj.version = self.cleaned_data["x_mitre_version"]
+        obj.domains = self.cleaned_data["x_mitre_domains"]
+        obj.mutable_elements = self.cleaned_data["x_mitre_mutable_elements"]
+
+        # save(commit=False) create the `save_m2m` method
+        self.save_m2m()
 
         # Respect the caller's original intent
         if should_commit:

@@ -337,7 +337,23 @@ class Asset(BaseModel, DescriptiveMixIn, MitreIdentifiableMixIn):
     related_assets = models.JSONField(blank=True, null=True)
 
 
+class Analytic(BaseModel, DescriptiveMixIn, MitreIdentifiableMixIn):
+    """
+    Asset in Mitre Attack
+
+    Uses the ``x-mitre-analytic`` data type.
+    """
+
+    stix_data_types = ("x-mitre-analytic",)
+    version = models.CharField(max_length=16)
+    platforms = models.JSONField()
+    domains = models.JSONField()
+    mutable_elements = models.JSONField(blank=True, null=True)
+    data_components = models.ManyToManyField(DataComponent, blank=True)
+
+
 ALL_MODELS = (
+    Analytic,
     Asset,
     Campaign,
     Collection,
