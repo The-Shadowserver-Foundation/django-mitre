@@ -133,7 +133,9 @@ def model_url(model_or_instance, view="index"):
     instance = None if inspect.isclass(model_or_instance) else model_or_instance
 
     if instance and view in pk_required_urls:
-        if hasattr(instance, "mitre_id"):
+        if view == "detail":
+            url = instance.get_absolute_url()
+        elif hasattr(instance, "mitre_id"):
             # If the instance has a mitre_id,
             # it is assumed the view object lookup is through the slug field.
             url = reverse(url_name, kwargs={"slug": instance.mitre_id})
