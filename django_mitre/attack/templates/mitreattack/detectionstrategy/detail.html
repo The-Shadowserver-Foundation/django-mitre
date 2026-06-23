@@ -1,0 +1,13 @@
+{% extends 'mitrecore/detail.html' %}
+{% load display_mitre_source_references_by_type from mitreattack_tags %}
+
+{% block content_title %}
+  {{ block.super }}
+  <h4>Technique detected: {% for ref in view.detects %}<a href="{% url 'mitreattack:technique_detail' ref.mitre_id %}">{{ ref.name }} | {{ ref.mitre_id }}</a>{% endfor %}</h4>
+{% endblock %}
+
+
+{% block content_model_references %}
+  {# If it's been revoked, place the refence it's revoking information at the top of the listing. #}
+  {% display_mitre_source_references_by_type 'revoked-by' title='Obsoleted By' %}
+{% endblock %}

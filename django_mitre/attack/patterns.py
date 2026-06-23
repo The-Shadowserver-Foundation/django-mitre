@@ -11,7 +11,11 @@ import re
 
 
 __all__ = (
+    "ASSET_ID_PATTERN",
+    "CAMPAIGN_ID_PATTERN",
+    "DATACOMPONENT_ID_PATTERN",
     "DATASOURCE_ID_PATTERN",
+    "DETECTION_STRATEGY_ID_PATTERN",
     "GROUP_ID_PATTERN",
     "MATRIX_ID_PATTERN",
     "MITIGATION_ID_PATTERN",
@@ -37,13 +41,17 @@ CAMPAIGN_ID_PATTERN = (
     f"{app_label}.campaign",
     re.compile(r"(?P<slug>C[0-9]+)", re.I),
 )
+DATACOMPONENT_ID_PATTERN = (
+    f"{app_label}.datacomponent",
+    re.compile(r"(?P<slug>DC[0-9]+)", re.I),
+)
 DATASOURCE_ID_PATTERN = (
     f"{app_label}.datasource",
     re.compile(r"(?P<slug>DS[0-9]+)", re.I),
 )
-DATACOMPONENT_ID_PATTERN = (
-    f"{app_label}.datacomponent",
-    re.compile(r"(?P<slug>DC[0-9]+)", re.I),
+DETECTION_STRATEGY_ID_PATTERN = (
+    f"{app_label}.detectionstrategy",
+    re.compile(r"(?P<slug>DET[0-9]+)", re.I),
 )
 GROUP_ID_PATTERN = (
     f"{app_label}.group",
@@ -73,8 +81,9 @@ TECHNIQUE_ID_PATTERN = (
 MATCHABLE_MODEL_PATTERNS = (
     ASSET_ID_PATTERN,
     CAMPAIGN_ID_PATTERN,
-    DATASOURCE_ID_PATTERN,
     DATACOMPONENT_ID_PATTERN,
+    DATASOURCE_ID_PATTERN,
+    DETECTION_STRATEGY_ID_PATTERN,
     GROUP_ID_PATTERN,
     MITIGATION_ID_PATTERN,
     SOFTWARE_ID_PATTERN,

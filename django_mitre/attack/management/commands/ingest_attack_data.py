@@ -1,4 +1,5 @@
 import re
+from collections import defaultdict
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Model
@@ -129,6 +130,10 @@ class Command(BaseStixIngestionCommand):
         ]
         # Sort the contents by type
         items = sorted(items, key=lambda x: MITRE_CONTENT_TYPES.index(x[0]))
+
+        # Run pre-checks on the data to look for known issues or possible conflicts.
+        self._precheck(dict(items))  # Will raise or log error if an issue is found.
+
         # Roll through the content
         for data_type, values in items:
             if data_type in ("x-mitre-collection",):
@@ -203,6 +208,39 @@ class Command(BaseStixIngestionCommand):
                 if has_changed:
                     obj.save()
                     self.log_updated(f"markdown for {obj}")
+
+    def _precheck(self, items: dict[str, list[dict]]) -> None:
+        """
+        Checks the data for known issues or possible conflicts.
+        This method will either raise an exception or log the problem.
+        """
+        # Look for Analytics that have a many-to-many relationship.
+        # The current in practice relationship is many Analytics to one Detection Strategy.
+        refs = defaultdict(list)
+        analytic_id_map = {
+            y["id"]: [
+                x["external_id"] for x in y["external_references"] if "mitre" in x["source_name"]
+            ][0]
+            for y in items["x-mitre-analytic"]
+        }
+        for detection_strategy in items["x-mitre-detection-strategy"]:
+            if detection_strategy.get("revoked") or detection_strategy.get("x_mitre_deprecated"):
+                continue
+            id = [
+                x["external_id"]
+                for x in detection_strategy["external_references"]
+                if "mitre" in x["source_name"]
+            ][0]
+            for ref in detection_strategy.get("x_mitre_analytic_refs", []):
+                refs[analytic_id_map[ref]].append(id)
+        multiple_assignments = {key: value for key, value in refs.items() if len(value) >= 2}
+        if multiple_assignments:
+            # It is assumed that an Analytic relates to a Detection Strategy (i.e. m:1).
+            raise RuntimeError(
+                f"Violation in the assumed data structure. {len(multiple_assignments)} "
+                "x-mitre-analytic objects were found to have multiple relationships with "
+                f"x-mitre-detection-strategy: {multiple_assignments}"
+            )
 
 
 def rewrite_markdown(obj, field: str) -> bool:

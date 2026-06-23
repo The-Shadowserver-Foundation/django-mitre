@@ -26,6 +26,7 @@ from .models import (
     Campaign,
     DataComponent,
     DataSource,
+    DetectionStrategy,
     Matrix,
     MitreIdentifiableMixIn,
     Reference,
@@ -581,6 +582,7 @@ class AnalyticForm(_get_form_base_class_by_model(Analytic)):
             "domains",
             "data_components",
             "mutable_elements",
+            "detection_strategy",
         )
 
     def clean_x_mitre_log_source_references(self):
@@ -618,6 +620,70 @@ class AnalyticForm(_get_form_base_class_by_model(Analytic)):
         obj.version = self.cleaned_data["x_mitre_version"]
         obj.domains = self.cleaned_data["x_mitre_domains"]
         obj.mutable_elements = self.cleaned_data["x_mitre_mutable_elements"]
+
+        # save(commit=False) create the `save_m2m` method
+        self.save_m2m()
+
+        # Respect the caller's original intent
+        if should_commit:
+            obj.save()
+
+        return obj
+
+
+@register_model_form(DetectionStrategy)
+class DetectionStrategyForm(_get_form_base_class_by_model(DetectionStrategy)):
+    x_mitre_version = forms.CharField(required=False)
+    x_mitre_contributors = forms.JSONField(required=False)
+    x_mitre_domains = forms.JSONField(required=True)
+    x_mitre_analytic_refs = forms.JSONField(required=True)
+
+    class Meta:
+        model = DetectionStrategy
+        fields = "__all__"
+        exclude = (
+            "version",
+            "contributors",
+            "domains",
+            "analytics",
+        )
+
+    def clean_x_mitre_analytic_refs(self):
+        stix_refs = (
+            self.cleaned_data["x_mitre_analytic_refs"]
+            if self.cleaned_data["x_mitre_analytic_refs"]
+            else []
+        )
+        refs = []
+        for stix_id in stix_refs:
+            try:
+                refs.append(lookup_object_via_stix_id(stix_id))
+            except ValueError as exc:
+                raise forms.ValidationError(*exc.args, code="invalid") from exc
+            except model.DoesNotExist:
+                raise forms.ValidationError(
+                    f"Object for {stix_id} not found",
+                    code="invalid",
+                ) from None
+        return refs
+
+    def _save_m2m(self):
+        # Must save the instance in order to associate the Tactics
+        self.instance.save()
+
+        for analytic in self.cleaned_data["x_mitre_analytic_refs"]:
+            self.instance.analytics.add(analytic)
+        super()._save_m2m()
+
+    def save(self, *args, **kwargs):
+        should_commit = kwargs.get("commit", True)
+        # Change commit so relationships can be made
+        kwargs["commit"] = False
+
+        obj = super().save(*args, **kwargs)
+        obj.version = self.cleaned_data["x_mitre_version"]
+        obj.contributors = self.cleaned_data["x_mitre_contributors"]
+        obj.domains = self.cleaned_data["x_mitre_domains"]
 
         # save(commit=False) create the `save_m2m` method
         self.save_m2m()

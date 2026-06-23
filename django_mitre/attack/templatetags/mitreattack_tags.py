@@ -39,15 +39,18 @@ def display_mitre_target_detects_references(context, title=None):
     A target reference is one where the Reference object
     has the contextual object set as ``Reference.target_ref``.
 
-    ``title`` can be supplied as a human readable section title.
-
-    This template tag exists separate from
-    ``display_mitre_references_by_type`` because the DataComponent
-    model is not an independently viewable type. So it doen't easily
-    fit the mold.
-
+    The ``title`` keyword argument can be supplied as a human readable section title.
     """
-    return display_mitre_target_references_by_type(context, "detects", title=title)
+    qs = context["object"].target_refs.filter(relationship_type="detects")
+    references = [x.source_ref for x in qs if not x.source_ref.deprecated]
+
+    if not references:
+        return {"references": []}
+
+    return {
+        "title": title,
+        "references": references,
+    }
 
 
 @register.inclusion_tag("mitreattack/display_mitre_references_by_type.html", takes_context=True)

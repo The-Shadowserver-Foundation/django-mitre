@@ -12,8 +12,9 @@ from ..utils import get_model_by_id, get_object_by_id
 EXAMPLE_IDS = (
     ["A9090"],
     ["C0004"],
-    ["DS1010"],
     ["DC0808"],
+    ["DS1010"],
+    ["DET5050"],
     ["G2020"],
     ["M3030"],
     ["S4040"],

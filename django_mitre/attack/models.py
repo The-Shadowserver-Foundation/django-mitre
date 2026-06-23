@@ -5,8 +5,10 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
+from django.shortcuts import reverse
 
 from ..core.models import MitreIdentifiableMixIn
+from ..core.utils.model import model_url_name
 
 
 __all__ = (
@@ -76,7 +78,7 @@ class BaseModel(models.Model):
     )
 
     def __str__(self):
-        return f"{self.mitre_stix_identifier}"
+        return f"{super().__str__()} - {self.mitre_stix_identifier}"
 
     class Meta:
         abstract = True
@@ -339,9 +341,13 @@ class Asset(BaseModel, DescriptiveMixIn, MitreIdentifiableMixIn):
 
 class Analytic(BaseModel, DescriptiveMixIn, MitreIdentifiableMixIn):
     """
-    Asset in Mitre Attack
+    Analytic in Mitre Attack
 
     Uses the ``x-mitre-analytic`` data type.
+
+    The Analytic schema (https://mitre-attack.github.io/attack-data-model/schemas/sdo/analytic.schema/)
+    does not enforce a singular relationship with a Detection Strategy,
+    but in practice so far (as of v19.1) this is the relationship.
     """
 
     stix_data_types = ("x-mitre-analytic",)
@@ -351,12 +357,41 @@ class Analytic(BaseModel, DescriptiveMixIn, MitreIdentifiableMixIn):
     mutable_elements = models.JSONField(blank=True, null=True)
     data_components = models.ManyToManyField(DataComponent, blank=True)
 
+    # The Detection Strategy is unknown during this object's creation.
+    # The relationship is assigned when the Detection Strategy is created.
+    detection_strategy = models.ForeignKey(
+        "DetectionStrategy",
+        null=True,
+        related_name="analytics",
+        on_delete=models.CASCADE,
+    )
+
+    def get_absolute_url(self):
+        # In practice, up to this point (v19.1), this is a 1:1 relationship.
+        det = self.detection_strategy
+        base_url = reverse(model_url_name(det, "detail"), kwargs={"slug": det.mitre_id})
+        return f"{base_url}#{self.mitre_id}"
+
+
+class DetectionStrategy(BaseModel, DescriptiveMixIn, MitreIdentifiableMixIn):
+    """
+    Detection Strategy in Mitre Attack
+
+    Uses the ``x-mitre-detection-strategy`` data type.
+    """
+
+    stix_data_types = ("x-mitre-detection-strategy",)
+    version = models.CharField(max_length=16)
+    contributors = models.JSONField(null=True, blank=True)
+    domains = models.JSONField()
+
 
 ALL_MODELS = (
     Analytic,
     Asset,
     Campaign,
     Collection,
+    DetectionStrategy,
     Group,
     Software,
     Tactic,

@@ -103,3 +103,18 @@ class CampaignDetailView(BaseDetailView):
 class AssetDetailView(BaseDetailView):
     model = models.Asset
     slug_field = "mitre_id"
+
+
+class DetectionStrategyDetailView(BaseDetailView):
+    model = models.DetectionStrategy
+    slug_field = "mitre_id"
+
+    @property
+    def detects(self):
+        """
+        Used to display the detection relationship.
+        """
+        return [
+            ref.target_ref
+            for ref in self.object.source_refs.filter(relationship_type="detects").all()
+        ]

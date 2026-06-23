@@ -32,6 +32,7 @@ MITRE_CONTENT_TYPES = (
     "x-mitre-data-source",
     "x-mitre-data-component",
     "x-mitre-analytic",
+    "x-mitre-detection-strategy",
     "x-mitre-tactic",
     "attack-pattern",
     "campaign",
