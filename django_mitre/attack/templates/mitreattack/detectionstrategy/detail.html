@@ -1,5 +1,6 @@
 {% extends 'mitrecore/detail.html' %}
-{% load display_mitre_source_references_by_type from mitreattack_tags %}
+{% load markdown from mitrecore.markdown %}
+{% load display_mitre_source_references_by_type model_url from mitreattack_tags %}
 
 {% block content_title %}
   {{ block.super }}
@@ -10,4 +11,37 @@
 {% block content_model_references %}
   {# If it's been revoked, place the refence it's revoking information at the top of the listing. #}
   {% display_mitre_source_references_by_type 'revoked-by' title='Obsoleted By' %}
+
+  {% block content_model_references_analytics %}
+    {% for object in object.analytics.all %}
+      <h3 id="{{ object.mitre_id }}">{{ object.mitre_id }} ({{ object.platforms|join:", " }})</h3>
+      <div>
+        {{ object.description | markdown | safe }}
+      </div>
+      <h4 class="underline">Log Sources</h4>
+      <table>
+        <tr>
+          <th>Data Component</th>
+          <th>Name</th>
+          <th>Channel</th>
+        </tr>
+        {% for log_source in object.log_sources.all %}
+          <tr>
+            <td><a href="{% model_url log_source.data_component 'detail' %}">{{ log_source.data_component.name }}</a></td>
+            <td>{{ log_source.name }}</td>
+            <td>{{ log_source.channel }}</td></tr>
+        {% endfor %}
+      </table>
+      <h4 class="underline">Mutable Elements</h4>
+      <table>
+        <tr>
+          <th>Field</th>
+          <th>Description</th>
+        </tr>
+        {% for item in object.mutable_elements %}
+          <tr><td>{{ item.field }}</td><td>{{ item.description }}</td></tr>
+        {% endfor %}
+      </table>
+    {% endfor %}
+  {% endblock %}
 {% endblock %}

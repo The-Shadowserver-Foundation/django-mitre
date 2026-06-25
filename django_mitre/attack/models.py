@@ -386,6 +386,19 @@ class DetectionStrategy(BaseModel, DescriptiveMixIn, MitreIdentifiableMixIn):
     domains = models.JSONField()
 
 
+class LogSource(models.Model):
+    name = models.CharField(max_length=255)
+    channel = models.CharField(max_length=255)
+
+    created = models.DateTimeField(auto_now_add=True)
+
+    data_component = models.ForeignKey(DataComponent, on_delete=models.CASCADE, related_name="+")
+    analytic = models.ForeignKey(Analytic, on_delete=models.CASCADE, related_name="log_sources")
+
+    def __str__(self):
+        return f"{self.data_component} | {self.name} | {self.channel}"
+
+
 ALL_MODELS = (
     Analytic,
     Asset,

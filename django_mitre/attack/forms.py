@@ -608,6 +608,11 @@ class AnalyticForm(_get_form_base_class_by_model(Analytic)):
 
         for log_source in self.cleaned_data["x_mitre_log_source_references"]:
             self.instance.data_components.add(log_source["obj"])
+            self.instance.log_sources.create(
+                data_component=log_source["obj"],
+                name=log_source["name"],
+                channel=log_source["channel"],
+            )
         super()._save_m2m()
 
     def save(self, *args, **kwargs):
