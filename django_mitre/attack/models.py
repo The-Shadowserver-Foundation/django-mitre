@@ -202,6 +202,18 @@ class DataComponent(BaseModel, DescriptiveMixIn, MitreIdentifiableMixIn):
     stix_data_types = ("x-mitre-data-component",)
     log_sources = models.JSONField(null=True, blank=True)
 
+    @property
+    def detection_strategies(self) -> models.QuerySet:
+        return (
+            DetectionStrategy.objects.get_active()
+            .filter(
+                id__in=self.analytics.get_active()
+                .values_list("detection_strategy", flat=True)
+                .distinct(),
+            )
+            .order_by("name")
+        )
+
 
 class Mitigation(BaseModel, DescriptiveMixIn, MitreIdentifiableMixIn):
     """Mitigation in Mitre Att&ck and Course of Action in STIX 2.1
@@ -355,7 +367,7 @@ class Analytic(BaseModel, DescriptiveMixIn, MitreIdentifiableMixIn):
     platforms = models.JSONField()
     domains = models.JSONField()
     mutable_elements = models.JSONField(blank=True, null=True)
-    data_components = models.ManyToManyField(DataComponent, blank=True)
+    data_components = models.ManyToManyField(DataComponent, blank=True, related_name="analytics")
 
     # The Detection Strategy is unknown during this object's creation.
     # The relationship is assigned when the Detection Strategy is created.
