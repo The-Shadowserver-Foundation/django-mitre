@@ -11,6 +11,7 @@ import re
 
 
 __all__ = (
+    "ANALYTIC_ID_PATTERN",
     "ASSET_ID_PATTERN",
     "CAMPAIGN_ID_PATTERN",
     "DATACOMPONENT_ID_PATTERN",
@@ -33,6 +34,10 @@ app_label = "mitreattack"
 # However, they are written for case exact matching in view url registration,
 # because we don't absolutely know that MITRE won't change to a character
 # case-sensitive identifier scheme.
+ANALYTIC_ID_PATTERN = (
+    f"{app_label}.analytic",
+    re.compile(r"(?P<slug>AN[0-9]+)", re.I),
+)
 ASSET_ID_PATTERN = (
     f"{app_label}.asset",
     re.compile(r"(?P<slug>A[0-9]+)", re.I),
