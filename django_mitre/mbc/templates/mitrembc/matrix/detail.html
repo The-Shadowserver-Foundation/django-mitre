@@ -18,7 +18,7 @@
     <thead>
       <tr>
         {% for tactic in view.get_ordered_tactics %}
-          <th>{{ tactic.name }}</th>
+          <th><a href="{% model_url tactic 'detail' %}">{{ tactic.name }}</a></th>
         {% endfor %}
       </tr>
     </thead>
