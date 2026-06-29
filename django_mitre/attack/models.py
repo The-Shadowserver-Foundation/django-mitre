@@ -305,7 +305,7 @@ class Tactic(BaseModel, DescriptiveMixIn, MitreIdentifiableMixIn):
     order_weight = models.IntegerField(default=0, blank=True, null=False)
 
     def __str__(self):
-        return f"{self.name} (within {self.collection.name})"
+        return f"{self.name} ({self.mitre_id}) within {self.collection.name}"
 
 
 class Identity(BaseModel):
