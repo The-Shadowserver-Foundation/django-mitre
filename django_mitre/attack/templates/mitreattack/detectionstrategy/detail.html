@@ -4,44 +4,51 @@
 
 {% block content_title %}
   {{ block.super }}
-  <h4>Technique detected: {% for ref in view.detects %}<a href="{% url 'mitreattack:technique_detail' ref.mitre_id %}">{{ ref.name }} | {{ ref.mitre_id }}</a>{% endfor %}</h4>
+  {% if object.deprecated %}
+    <h4>Deprecation Warning</h4>
+  {% else %}
+    <h4>Technique detected: {% for ref in view.detects %}<a href="{% url 'mitreattack:technique_detail' ref.mitre_id %}">{{ ref.name }} | {{ ref.mitre_id }}</a>{% endfor %}</h4>
+  {% endif %}
 {% endblock %}
 
-
 {% block content_model_references %}
-  {# If it's been revoked, place the refence it's revoking information at the top of the listing. #}
-  {% display_mitre_source_references_by_type 'revoked-by' title='Obsoleted By' %}
+  {% if object.deprecated %}
+    <p>This detection strategy has been deprecated</p>
+  {% else %}
+    {# If it's been revoked, place the refence it's revoking information at the top of the listing. #}
+    {% display_mitre_source_references_by_type 'revoked-by' title='Obsoleted By' %}
 
-  {% block content_model_references_analytics %}
-    {% for object in object.analytics.all %}
-      <h3 id="{{ object.mitre_id }}">{{ object.mitre_id }} ({{ object.platforms|join:", " }})</h3>
-      <div>
-        {{ object.description | markdown | safe }}
-      </div>
-      <h4 class="underline">Log Sources</h4>
-      <table>
-        <tr>
-          <th>Data Component</th>
-          <th>Name</th>
-          <th>Channel</th>
-        </tr>
-        {% for log_source in object.log_sources.all %}
+    {% block content_model_references_analytics %}
+      {% for object in object.analytics.all %}
+        <h3 id="{{ object.mitre_id }}">{{ object.mitre_id }} ({{ object.platforms|join:", " }})</h3>
+        <div>
+          {{ object.description | markdown | safe }}
+        </div>
+        <h4 class="underline">Log Sources</h4>
+        <table>
           <tr>
-            <td><a href="{% model_url log_source.data_component 'detail' %}">{{ log_source.data_component.name }}</a></td>
-            <td>{{ log_source.name }}</td>
-            <td>{{ log_source.channel }}</td></tr>
-        {% endfor %}
-      </table>
-      <h4 class="underline">Mutable Elements</h4>
-      <table>
-        <tr>
-          <th>Field</th>
-          <th>Description</th>
-        </tr>
-        {% for item in object.mutable_elements %}
-          <tr><td>{{ item.field }}</td><td>{{ item.description }}</td></tr>
-        {% endfor %}
-      </table>
-    {% endfor %}
-  {% endblock %}
+            <th>Data Component</th>
+            <th>Name</th>
+            <th>Channel</th>
+          </tr>
+          {% for log_source in object.log_sources.all %}
+            <tr>
+              <td><a href="{% model_url log_source.data_component 'detail' %}">{{ log_source.data_component.name }}</a></td>
+              <td>{{ log_source.name }}</td>
+              <td>{{ log_source.channel }}</td></tr>
+          {% endfor %}
+        </table>
+        <h4 class="underline">Mutable Elements</h4>
+        <table>
+          <tr>
+            <th>Field</th>
+            <th>Description</th>
+          </tr>
+          {% for item in object.mutable_elements %}
+            <tr><td>{{ item.field }}</td><td>{{ item.description }}</td></tr>
+          {% endfor %}
+        </table>
+      {% endfor %}
+    {% endblock %}
+  {% endif %}
 {% endblock %}
