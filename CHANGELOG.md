@@ -1,3 +1,8 @@
+## v0.3.0 - 2026-Jun-29
+
+- Updated the README and documentation.
+- Made adjustments to comply with additions and deprecations in [ATT&CK Data Model v3.3.0](https://mitre-attack.github.io/attack-data-model/schemas/changelog-schema/#v330-28-october-2025).
+
 ## v0.2.2 - 2026-May-15
 
 - Updated to latest version of `django-filtering`
