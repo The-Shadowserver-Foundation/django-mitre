@@ -19,6 +19,7 @@ urlpatterns = [
 
 VIEWABLE_MODELS_AND_PK_PATTERNS = (
     # [<model>, <pattern>],
+    [patterns.ANALYTIC_ID_PATTERN[0], None],  # Does not have a dedicated 'detail' view.
     patterns.ASSET_ID_PATTERN,
     patterns.CAMPAIGN_ID_PATTERN,
     patterns.DATACOMPONENT_ID_PATTERN,
@@ -41,7 +42,9 @@ for model_name, regex_pk_pattern in VIEWABLE_MODELS_AND_PK_PATTERNS:
             #: regex_pk_pattern is an re.compile object; pull out the pattern
             include(
                 produce_paths_for_model(
-                    model, regex_pk_pattern.pattern, default_filterset_class=MitreAttackFilterSet
+                    model,
+                    regex_pk_pattern.pattern if regex_pk_pattern else None,
+                    default_filterset_class=MitreAttackFilterSet,
                 )
             ),
         ),

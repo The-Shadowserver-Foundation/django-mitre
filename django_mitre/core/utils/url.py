@@ -29,7 +29,7 @@ def default_view_wrapper(
     url_name: str | None = None,
     model: Model | None = None,
     #: General short name of the view (e.g. list, detail, filter)
-    name: str | None = None
+    name: str | None = None,
 ) -> Callable:
     """
     The default view wrapper returns the view without modification.
@@ -47,7 +47,7 @@ def get_view_wrapper() -> Callable:
     takes a ``view`` argument and ``model``, ``name``, and ``url_name`` keyword arguments.
 
     """
-    wrapper = getattr(settings, 'DJANGO_MITRE_VIEW_WRAPPER', default_view_wrapper)
+    wrapper = getattr(settings, "DJANGO_MITRE_VIEW_WRAPPER", default_view_wrapper)
     if isinstance(wrapper, str):
         wrapper = import_string(wrapper)
     return wrapper
@@ -70,7 +70,7 @@ def gracefully_import_module(name, package=None, default=None):
 
 def produce_paths_for_model(
     model,
-    pk_pattern,
+    pk_pattern=None,
     IndexView=BaseIndexView,
     FilterView=FilterView,
     default_filterset_class=MitreFilterSet,
@@ -98,13 +98,14 @@ def produce_paths_for_model(
     # Create views
     filter_view = FilterView.as_view(model=model, filterset_class=filterset_class)
     index_view = index_view_class.as_view(model=model, filterset_class=filterset_class)
-    detail_view = getattr(views, get_view_class_name(model, "detail")).as_view()
 
     paths = [
         re_path("^$", index_view, "index", model=model),
-        re_path(f"^detail/{pk_pattern}/$", detail_view, "detail", model=model),
         path("filter/", filter_view, "filter", model=model),
     ]
+    if pk_pattern is not None:
+        detail_view = getattr(views, get_view_class_name(model, "detail")).as_view()
+        paths.append(re_path(f"^detail/{pk_pattern}/$", detail_view, "detail", model=model))
     return paths
 
 
@@ -123,6 +124,7 @@ def _path(
         return django_urls_re_path(route, view, name=url_name)
     else:
         return django_urls_path(route, view, name=url_name)
+
 
 path = partial(_path, is_regex=False)
 re_path = partial(_path, is_regex=True)
