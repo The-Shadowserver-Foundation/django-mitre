@@ -400,7 +400,7 @@ class DetectionStrategy(BaseModel, DescriptiveMixIn, MitreIdentifiableMixIn):
 
 class LogSource(models.Model):
     name = models.CharField(max_length=255)
-    channel = models.CharField(max_length=255)
+    channel = models.CharField(max_length=511)
 
     created = models.DateTimeField(auto_now_add=True)
 
