@@ -56,7 +56,9 @@ MITRE_TACTICS_ORDER_WEIGHTS_BY_NAME = {
     "Persistence": 50,
     "Privilege Escalation": 60,
     "Defense Evasion": 70,
+    "Stealth": 75,
     "Evasion": 80,
+    "Defense Impairment": 85,
     "Credential Access": 90,
     "Discovery": 100,
     "Lateral Movement": 110,
@@ -66,8 +68,8 @@ MITRE_TACTICS_ORDER_WEIGHTS_BY_NAME = {
     "Inhibit Response Function": 150,
     "Impair Process Control": 160,
     "Impact": 170,
-    "Network Effects": 180,
-    "Remote Service Effects": 190,
+    "Network Effects": 180,  # Deprecated in attack data 19.x
+    "Remote Service Effects": 190,  # Deprecated in attack data 19.x
     "Communication Micro-objective": 200,
     "Cryptography Micro-objective": 210,
     "Data Micro-objective": 220,
