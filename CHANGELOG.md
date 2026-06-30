@@ -1,3 +1,10 @@
+## v0.3.1 - 2026-Jun-29
+
+- Update templates with table classes.
+- Increase Log Source channel field's max length to fix issue in non-SQLite databases.
+- Add Analytic index view without detail view.
+- Include the Analytic MITRE ID pattern.
+
 ## v0.3.0 - 2026-Jun-29
 
 - Updated the README and documentation.
