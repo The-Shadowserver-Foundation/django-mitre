@@ -6,18 +6,18 @@
   {% display_mitre_source_references_by_type 'revoked-by' title='Obsoleted By' %}
 
   <h3 class="underline">Log Sources</h3>
-  <table>
+  <table class="table">
     <tr>
       <th>Name</th>
       <th>Channel</th>
     </tr>
       {% for item in object.log_sources %}
-    <tr><td>{{ item.name }}</td><td>{{ item.channel }}</td></tr>
+    <tr><td>{{ item.name }}</td><td class="truncate">{{ item.channel }}</td></tr>
       {% endfor %}
   </table>
 
   <h3 class="underline">Detection Strategy</h3>
-  <table>
+  <table class="table">
     <tr>
       <th>ID</th>
       <th>Name</th>
@@ -26,7 +26,7 @@
     {% for det in object.detection_strategies.all %}
       <tr>
         <td><a href="{% model_url det 'detail' %}" title="{{ det.name }}">{{ det.mitre_id }}</a></td>
-        <td><a href="{% model_url det 'detail' %}" title="{{ det.mitre_id }}">{{ det.name }}</a></td>
+        <td class="truncate"><a href="{% model_url det 'detail' %}" title="{{ det.mitre_id }}">{{ det.name }}</a></td>
         {% with tech=det.source_refs.first.target_ref %}
           <td><a href="{% model_url tech 'detail' %}" title="{{ tech.name }}">{{ tech.mitre_id }}</a></td>
         {% endwith %}

@@ -25,7 +25,7 @@
           {{ object.description | markdown | safe }}
         </div>
         <h4 class="underline">Log Sources</h4>
-        <table>
+        <table class="table">
           <tr>
             <th>Data Component</th>
             <th>Name</th>
@@ -35,17 +35,17 @@
             <tr>
               <td><a href="{% model_url log_source.data_component 'detail' %}">{{ log_source.data_component.name }}</a></td>
               <td>{{ log_source.name }}</td>
-              <td>{{ log_source.channel }}</td></tr>
+              <td class="truncate">{{ log_source.channel }}</td></tr>
           {% endfor %}
         </table>
         <h4 class="underline">Mutable Elements</h4>
-        <table>
+        <table class="table">
           <tr>
             <th>Field</th>
             <th>Description</th>
           </tr>
           {% for item in object.mutable_elements %}
-            <tr><td>{{ item.field }}</td><td>{{ item.description }}</td></tr>
+            <tr><td>{{ item.field }}</td><td class="truncate">{{ item.description }}</td></tr>
           {% endfor %}
         </table>
       {% endfor %}

@@ -27,7 +27,7 @@
 
   {% if object.related_assets %}
     <h3 class="underline">Related Assets</h3>
-    <table>
+    <table class="table">
       <tr>
         <th>Name</th>
         <th>Sectors</th>
@@ -36,8 +36,8 @@
       {% for related in object.related_assets %}
         <tr>
           <td>{{ related.name }}</td>
-          <td>{{ related.related_asset_sectors|join:", " }}</td>
-          <td>{{ related.description }}</td>
+          <td class="truncate">{{ related.related_asset_sectors|join:", " }}</td>
+          <td class="truncate">{{ related.description }}</td>
         </tr>
       {% endfor %}
     </table>
