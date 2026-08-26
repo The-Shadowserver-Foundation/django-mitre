@@ -95,3 +95,6 @@ lines-after-imports = 2
 
 [tool.pytest.ini_options]
 addopts = "-vv --pdbcls=IPython.terminal.debugger:TerminalPdb"
+filterwarnings = [
+    "ignore:DateTimeField .* received a naive datetime:RuntimeWarning"
+]
