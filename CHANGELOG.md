@@ -1,3 +1,7 @@
+## v? - unreleased
+
+- Reorganized tests and changed to using pytest.
+
 ## v0.3.1 - 2026-Jun-29
 
 - Update templates with table classes.
