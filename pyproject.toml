@@ -31,9 +31,14 @@ dependencies = [
 
 
 [project.optional-dependencies]
-test = ["model_bakery"]
-tests = ["model_bakery"]
 django42 = ["django-querystring-tag"]
+
+
+[dependency-groups]
+dev = [
+    "model-bakery>=1.24.0",
+    "pytest>=9.1.1",
+]
 
 [project.urls]
 Homepage = "https://github.com/The-Shadowserver-Foundation/django-mitre"
