@@ -1,5 +1,6 @@
 import unittest
 
+import pytest
 from django.apps import apps
 from django.test import TestCase
 from model_bakery import baker
@@ -40,6 +41,7 @@ EXAMPLE_IDS_TO_MODEL_PATTERNS_BY_CONTEXT = {
 }
 
 
+@pytest.mark.django_db
 class GetModelContextTestCase(unittest.TestCase):
     @property
     def target(self):

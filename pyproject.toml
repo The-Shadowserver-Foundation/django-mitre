@@ -36,8 +36,11 @@ django42 = ["django-querystring-tag"]
 
 [dependency-groups]
 dev = [
+    "ipdb>=0.13.13",
     "model-bakery>=1.24.0",
     "pytest>=9.1.1",
+    "pytest-django>=4.14.0",
+    "pytest-mock>=3.15.1",
 ]
 
 [project.urls]
@@ -89,3 +92,6 @@ ignore = [ "F403" ]
 [tool.ruff.lint.isort]
 # Use a double line break after each import block.
 lines-after-imports = 2
+
+[tool.pytest.ini_options]
+addopts = "-vv --pdbcls=IPython.terminal.debugger:TerminalPdb"
