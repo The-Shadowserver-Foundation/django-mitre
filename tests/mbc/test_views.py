@@ -2,8 +2,8 @@ from django.test import TestCase
 from django.urls import reverse
 from model_bakery import baker
 
-from ...core.utils import model_url_name
-from ..models import Software
+from django_mitre.core.utils import model_url_name
+from django_mitre.mbc.models import Software
 
 
 class BaseDetailViewTestCase(TestCase):

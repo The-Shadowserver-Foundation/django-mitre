@@ -8,12 +8,11 @@ from model_bakery import baker
 from django_mitre.attack.patterns import (
     MATCHABLE_MODEL_PATTERNS as ATTACK_MATCHABLE_MODEL_PATTERNS,
 )
+from django_mitre.core.utils import get_model_by_id, get_model_context, get_object_by_id
+from django_mitre.core.utils.ident import MATCHABLE_MODEL_PATTERNS_BY_CONTEXT
 from django_mitre.mbc.patterns import (
     MATCHABLE_MODEL_PATTERNS as MBC_MATCHABLE_MODEL_PATTERNS,
 )
-
-from ...utils import get_model_by_id, get_model_context, get_object_by_id
-from ...utils.ident import MATCHABLE_MODEL_PATTERNS_BY_CONTEXT
 
 
 ATTACK_EXAMPLE_IDS = (

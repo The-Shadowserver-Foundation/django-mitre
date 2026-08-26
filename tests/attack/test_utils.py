@@ -5,8 +5,8 @@ from django.db.models import Model
 from django.test import TestCase
 from model_bakery import baker
 
-from ..patterns import MATCHABLE_MODEL_PATTERNS
-from ..utils import get_model_by_id, get_object_by_id
+from django_mitre.attack.patterns import MATCHABLE_MODEL_PATTERNS
+from django_mitre.attack.utils import get_model_by_id, get_object_by_id
 
 
 EXAMPLE_IDS = (

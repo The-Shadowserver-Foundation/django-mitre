@@ -3,9 +3,9 @@ from django.test import TestCase
 from django.urls import reverse
 from model_bakery import baker
 
-from ...core.utils.model import model_url_name
-from ..models import DataSource, Software, Technique
-from ..patterns import MATCHABLE_MODEL_PATTERNS
+from django_mitre.attack.models import DataSource, Software, Technique
+from django_mitre.attack.patterns import MATCHABLE_MODEL_PATTERNS
+from django_mitre.core.utils.model import model_url_name
 
 
 EXAMPLE_IDS = (
