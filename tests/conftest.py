@@ -25,6 +25,7 @@ def pytest_configure(config):
             "django_filtering",
             "django_filtering_ui",
             "django_mitre.core",
+            "django_mitre.atlas",
             "django_mitre.attack",
             "django_mitre.mbc",
         ],

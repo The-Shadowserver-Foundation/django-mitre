@@ -27,6 +27,7 @@ dependencies = [
     "django-filtering-ui >= 0.0.8",
     "markdown",
     "PyGithub",
+    "pyyaml>=6.0.3",
 ]
 
 
